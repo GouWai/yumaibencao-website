@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>禹脉本草 - 项目团队</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+
+  <!-- 配置Tailwind自定义颜色和字体 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2D5D2A',     // 深绿色主色调
+            secondary: '#D4B16A',   // 金色辅助色
+            tertiary: '#8B5A2B',    // 棕色点缀色
+            background: '#F5F2EA',  // 米色背景
+            text: '#333333',        // 主要文本色
+          },
+          fontFamily: {
+            sans: ['Noto Sans SC', 'sans-serif'],
+            serif: ['Noto Serif SC', 'serif'],
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+    .content-auto {
+      content-visibility: auto;
+    }
+    .section-divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #2D5D2A, transparent);
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  @layer components {
+    /* 折线时间轴样式 */
+    .timeline-dot {
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-dot:hover {
+      transform: scale(1.1) translateY(-8px); /* 上方节点hover时保持上移并缩放 */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    .timeline-item:nth-child(even) .timeline-dot:hover {
+      transform: scale(1.1) translateY(8px); /* 下方节点hover时保持下移并缩放 */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 详情卡片指示箭头（区分上下方向） */
+    .timeline-detail::after {
+      content: '';
+      position: absolute;
+      border-width: 5px;
+      border-style: solid;
+    }
+    /* 上方节点的详情箭头（向下） */
+    .timeline-item:nth-child(odd) .timeline-detail::after {
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-color: transparent transparent white transparent;
+    }
+    /* 下方节点的详情箭头（向上） */
+    .timeline-item:nth-child(even) .timeline-detail::after {
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-color: white transparent transparent transparent;
+    }
+
+    /* 响应式调整（修复逻辑错误） */
+    @media (max-width: 768px) {
+      /* 移动端时间轴容器改为横向滚动 */
+      .timeline-scroll {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 12px;
+        gap: 24px;
+        justify-content: flex-start;
+      }
+      .timeline-item {
+        min-width: 120px;
+        flex-shrink: 0;
+      }
+      .timeline-detail {
+        width: 260px;
+        font-size: 0.875rem;
+      }
+      /* 移动端隐藏折线，使用简化横线 */
+      svg {
+        display: none;
+      }
+      /* 移动端保持上下错落 */
+      .timeline-item:nth-child(odd) .timeline-dot {
+        transform: translateY(-16px);
+      }
+      .timeline-item:nth-child(even) .timeline-dot {
+        transform: translateY(16px);
+      }
+      /* 移动端hover效果修正 */
+      .timeline-item:nth-child(odd) .timeline-dot:hover {
+        transform: scale(1.1) translateY(-16px);
+      }
+      .timeline-item:nth-child(even) .timeline-dot:hover {
+        transform: scale(1.1) translateY(16px);
+      }
+    }
+  }
+</style>
+
+</head>
+
+<body class="bg-background text-text font-sans">
+
+  <script src="script.js"></script>
+  <!-- 导航栏（与其他页面统一） -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="logo">
+        <img src="picture/logo.jpg" alt="禹脉本草LOGO">
+        <span class="logo-text">禹脉本草</span>
+      </div>
+      <div class="nav-links">
+        <a href="../../culture/index.html" >文化溯源</a>
+        <a href="../../products/index.html">本草好物</a>
+        <a href="../../page2_medium/各大媒体宣传成果/媒体宣传成果.html">媒体聚焦</a>
+        <a href="../../page3_our_story/溯源之旅/我们的故事.html" class="active">我们的故事</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- 引入Font Awesome图标库（用于导航按钮图标） -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- 页面标题（图片100%覆盖header，无空隙） -->
+  <header class="relative py-16 md:py-24 bg-primary/10 overflow-hidden">
+    <!-- 背景图父容器：绝对定位+占满整个header（给图片提供“满屏的容器”） -->
+    <div class="absolute inset-0 z-0"> <!-- inset-0 = 上下左右都贴边，无任何空隙 -->
+      <!-- 关键！给图片加 .banner-bg 类，让满屏样式生效 -->
+      <img src="picture/team.png" alt="背景图" class="banner-bg">
+      <!-- 半透明遮罩：在图片上方，不影响图片满屏 -->
+      <div class="absolute inset-0 bg-primary/15"></div>
+    </div>
+
+    <div class="container header-container mx-auto px-4 text-center relative z-10">
+      <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-4">
+        <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-serif font-bold text-white mb-0">溯源之旅 · 中医药传承之路</h1>
+      </div>
+      <!-- 分割线颜色不变（若需改白色可加 bg-white） -->
+      <div class="w-32 h-1 bg-secondary mx-auto mb-6 transition-all duration-500 ease"
+        onmouseenter="this.style.width='48px'" onmouseleave="this.style.width='128px'"></div>
+      <!-- 2. 描述文字：text-gray-700 改为 text-white（白色），hover 颜色同步改为白色 -->
+      <div class="max-w-3xl mx-auto">
+        <p class="banner-subtitle text-lg md:text-xl text-white transition-all duration-500 ease">
+          汇聚热爱中医药文化的专业人才<br> 致力于传承与创新，让中医药文化焕发新生
+        </p>
+        <br>
+        <br>
+        <div class="banner-decoration">
+          <i class="fa fa-leaf"></i>
+          <span>传承千年</span>
+          <i class="fa fa-book"></i>
+          <span>弘扬文化</span>
+          <i class="fa fa-heartbeat"></i>
+        </div>
+        <button class="banner-btn" onclick="scrollToContent()">
+          <i class="fa fa-book"></i> 开始探索
+        </button>
+      </div>
+    </div>
+
+  </header>
+
+  <main class="container mx-auto px-4 py-12">
+    <!-- 第一部分：团队架构与成员 -->
+    <section id="team" class="mb-20">
+
+      <!-- 团队历程时间轴-->
+      <section id="timeline" class="mb-20 py-16 bg-background">
+        <div class="text-center mb-12">
+          <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-serif font-bold text-primary mb-2">团队历程</h2>
+          <div class="w-32 h-1.5 bg-secondary mx-auto"></div>
+        </div>
+
+        <div class="relative max-w-5xl mx-auto px-4">
+          <!-- 时间轴中心折线 -->
+          <svg class="absolute left-0 right-0 top-0 bottom-0 w-full h-full z-0" viewBox="0 0 1000 200"
+            preserveAspectRatio="none">
+            <path d="M50,100 L250,50 L450,100 L650,50 L850,100 L950,100" stroke="#2D5D2A" stroke-width="2" fill="none"
+              stroke-dasharray="4 2" />
+          </svg>
+
+          <!-- 时间轴内容 -->
+          <div class="relative z-10 space-y-16 md:space-y-0 md:grid md:grid-cols-5 gap-4">
+            <!-- 时间点1（上） -->
+            <div class="timeline-item flex flex-col items-center md:items-start group">
+              <div
+                class="timeline-dot w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg shadow-lg cursor-pointer transition-all duration-300 mb-4 transform md:-translate-y-8">
+                2021
+                <!-- 悬停详情（下方向） -->
+                <div
+                  class="timeline-detail absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 bg-white rounded-xl shadow-xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20">
+                  <div class="flex items-center mb-2">
+                    <div class="w-3 h-3 rounded-full bg-primary mr-2"></div>
+                    <h4 class="text-lg font-bold text-primary">项目启动</h4>
+                  </div>
+                  <p class="text-sm text-gray-600">团队在河南大学中医药文化研讨会上萌生"禹脉本草"项目构想，初期3人核心团队组建完成。</p>
+                  <div class="mt-3 pt-3 border-t border-primary/10 flex justify-end">
+                    <span class="text-xs text-primary/70">2021年9月</span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-center md:text-left text-base font-medium">项目启动</p>
+            </div>
+
+            <!-- 时间点2（下） -->
+            <div class="timeline-item flex flex-col items-center md:items-center group">
+              <p class="text-center text-base font-medium mb-4">高校合作确立</p>
+              <div
+                class="timeline-dot w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg shadow-lg cursor-pointer transition-all duration-300 transform md:translate-y-8">
+                2022
+                <!-- 悬停详情（上方向） -->
+                <div
+                  class="timeline-detail absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 bg-white rounded-xl shadow-xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20">
+                  <div class="flex items-center mb-2">
+                    <div class="w-3 h-3 rounded-full bg-primary mr-2"></div>
+                    <h4 class="text-lg font-bold text-primary">高校合作确立</h4>
+                  </div>
+                  <p class="text-sm text-gray-600">与河南大学正式签约共建实践基地，"本草创客坊"挂牌成立，首批5名设计专业学生加入。</p>
+                  <div class="mt-3 pt-3 border-t border-primary/10 flex justify-end">
+                    <span class="text-xs text-primary/70">2022年4月</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 时间点3（上） -->
+            <div class="timeline-item flex flex-col items-center md:items-center group">
+              <div
+                class="timeline-dot w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg shadow-lg cursor-pointer transition-all duration-300 mb-4 transform md:-translate-y-8">
+                2023
+                <!-- 悬停详情（下方向） -->
+                <div
+                  class="timeline-detail absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 bg-white rounded-xl shadow-xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20">
+                  <div class="flex items-center mb-2">
+                    <div class="w-3 h-3 rounded-full bg-primary mr-2"></div>
+                    <h4 class="text-lg font-bold text-primary">产品上线</h4>
+                  </div>
+                  <p class="text-sm text-gray-600">首款"禹药六君子"盲盒系列产品上线，获禹州市创新创业大赛二等奖，团队规模扩展至10人。</p>
+                  <div class="mt-3 pt-3 border-t border-primary/10 flex justify-end">
+                    <span class="text-xs text-primary/70">2023年6月</span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-center text-base font-medium">产品上线</p>
+            </div>
+
+            <!-- 时间点4（下） -->
+            <div class="timeline-item flex flex-col items-center md:items-center group">
+              <p class="text-center text-base font-medium mb-4">政策扶持落地</p>
+              <div
+                class="timeline-dot w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg shadow-lg cursor-pointer transition-all duration-300 transform md:translate-y-8">
+                2024
+                <!-- 悬停详情（上方向） -->
+                <div
+                  class="timeline-detail absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 bg-white rounded-xl shadow-xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20">
+                  <div class="flex items-center mb-2">
+                    <div class="w-3 h-3 rounded-full bg-primary mr-2"></div>
+                    <h4 class="text-lg font-bold text-primary">政策扶持落地</h4>
+                  </div>
+                  <p class="text-sm text-gray-600">成功申请河南省大学生创新创业扶持资金2.5万元，与禹州3家药材基地签订合作协议。</p>
+                  <div class="mt-3 pt-3 border-t border-primary/10 flex justify-end">
+                    <span class="text-xs text-primary/70">2024年2月</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 时间点5（上） -->
+            <div class="timeline-item flex flex-col items-center md:items-end group">
+              <div
+                class="timeline-dot w-14 h-14 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-lg shadow-lg cursor-pointer transition-all duration-300 mb-4 transform md:-translate-y-8">
+                2025
+                <!-- 悬停详情（下方向） -->
+                <div
+                  class="timeline-detail absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 bg-white rounded-xl shadow-xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20">
+                  <div class="flex items-center mb-2">
+                    <div class="w-3 h-3 rounded-full bg-secondary mr-2"></div>
+                    <h4 class="text-lg font-bold text-secondary">品牌升级</h4>
+                  </div>
+                  <p class="text-sm text-gray-600">完成"禹脉本草"品牌升级，启动IP商标全类注册，与2家药企签订年度合作协议。</p>
+                  <div class="mt-3 pt-3 border-t border-secondary/10 flex justify-end">
+                    <span class="text-xs text-secondary/70">2025年Q1</span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-center md:text-right text-base font-medium">品牌升级</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="text-center mb-12">
+        <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-serif font-bold text-primary mb-2">团队架构与成员</h2>
+        <div class="w-32 h-1.5 bg-secondary mx-auto"></div>
+      </div>
+
+
+      <!-- 团队架构图 -->
+      <div class="bg-white rounded-lg shadow-lg p-6 mb-16">
+        <h3 class="text-xl font-bold text-primary mb-6 text-center">团队架构</h3>
+        <div class="max-w-4xl mx-auto">
+          <canvas id="orgChart" height="300"></canvas>
+        </div>
+      </div>
+
+      <!-- 成员介绍（无图文字版） -->
+      <div class="space-y-10">
+        <!-- 管理层 -->
+        <div>
+          <h3 class="text-2xl font-bold text-primary mb-4">管理层</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 付成林（总经理） -->
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+              <h4 class="text-xl font-bold text-primary mb-1">付成林</h4>
+              <p class="text-tertiary mb-3">总经理</p>
+              <!--  
+              <div class="mb-3">
+                <span class="font-medium">专业背景：</span>
+                <span>中医药大学中医学博士</span>
+              </div>
+              -->
+              <div>
+                <span class="font-medium">负责工作：</span>
+                <span>整体战略规划、团队管理、项目决策</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 技术部 -->
+        <div>
+          <h3 class="text-2xl font-bold text-primary mb-4">技术部</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 李依璐（技术部主管） -->
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+              <h4 class="text-xl font-bold text-primary mb-1">李依璐</h4>
+              <p class="text-tertiary mb-3">技术部主管</p>
+              <!--  
+              <div class="mb-3">
+                <span class="font-medium">专业背景：</span>
+                <span>软件学院</span>
+              </div>
+              -->
+              <div>
+                <span class="font-medium">负责工作：</span>
+                <span>网站开发、数字平台搭建与维护</span>
+              </div>
+            </div>
+            <!-- 候冬寒 -->
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+              <h4 class="text-xl font-bold text-primary mb-1">候冬寒</h4>
+              <p class="text-tertiary mb-3">技术部开发工程师</p>
+              <!--  
+              <div class="mb-3">
+                <span class="font-medium">专业背景：</span>
+                <span>软件工程学士</span>
+              </div> -->
+              <div>
+                <span class="font-medium">负责工作：</span>
+                <span>官网开发维护、小程序功能迭代、数据安全管理</span>
+              </div>
+            </div>
+            <!-- 赵靳源 -->
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+              <h4 class="text-xl font-bold text-primary mb-1">赵靳源</h4>
+              <p class="text-tertiary mb-3">技术部开发工程师</p>
+              <!--  
+              <div class="mb-3">
+                <span class="font-medium">专业背景：</span>
+                <span>软件工程学士</span>
+              </div> -->
+              <div>
+                <span class="font-medium">负责工作：</span>
+                <span>网络安全维护、网站部署与搭建</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 市场销售部 -->
+      <div>
+        <h3 class="text-2xl font-bold text-primary mb-4">市场销售部</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- 洪佳音（市场销售部主管） -->
+          <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+            <h4 class="text-xl font-bold text-primary mb-1">洪佳音</h4>
+            <p class="text-tertiary mb-3">市场经理</p>
+            <!--  
+            <div class="mb-3">
+              <span class="font-medium">专业背景：</span>
+              <span>市场营销专业学士</span>
+            </div>   -->
+            <div>
+              <span class="font-medium">负责工作：</span>
+              <span>市场推广、销售渠道拓展、客户关系</span>
+            </div>
+          </div>
+          <!-- 郭若晗 -->
+          <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+            <h4 class="text-xl font-bold text-primary mb-1">郭若晗</h4>
+            <p class="text-tertiary mb-3">销售主管</p>
+
+            <!--  
+            <div class="mb-3">
+              <span class="font-medium">专业背景：</span>
+              <span>市场营销学士</span>
+            </div> -->
+            <div>
+              <span class="font-medium">负责工作：</span>
+              <span>线下渠道拓展、客户关系维护、活动策划执行</span>
+            </div>
+          </div>
+
+          <!-- 许佳鑫 -->
+          <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+            <h4 class="text-xl font-bold text-primary mb-1">许佳鑫</h4>
+            <p class="text-tertiary mb-3">销售</p>
+
+            <!--  
+            <div class="mb-3">
+              <span class="font-medium">专业背景：</span>
+              <span>市场营销学士</span>
+            </div> -->
+            <div>
+              <span class="font-medium">负责工作：</span>
+              <span>制定销售计划、开拓线上线下销售通道</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 宣传部 -->
+      <div>
+        <h3 class="text-2xl font-bold text-primary mb-4">宣传部</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- 张琪佳（宣传部主管） -->
+          <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+            <h4 class="text-xl font-bold text-primary mb-1">张琪佳</h4>
+            <p class="text-tertiary mb-3">宣传部主管</p>
+            <!--  
+            <div class="mb-3">
+              <span class="font-medium">专业背景：</span>
+              <span>新闻传播学硕士</span>
+            </div>
+              -->
+            <div>
+              <span class="font-medium">负责工作：</span>
+              <span>品牌宣传、媒体对接、文化推广</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 财务部 -->
+      <div>
+        <h3 class="text-2xl font-bold text-primary mb-4">财务后勤部</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- 李须航 -->
+          <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+            <h4 class="text-xl font-bold text-primary mb-1">李须航</h4>
+            <p class="text-tertiary mb-3">财务部主管</p>
+            <!--  
+            <div class="mb-3">
+              <span class="font-medium">专业背景：</span>
+              <span>中药学博士</span>
+            </div>
+
+          -->
+            <div>
+              <span class="font-medium">负责工作：</span>
+              <span>管理公司财务，进行账务处理、成本核算</span>
+            </div>
+          </div>
+
+          <!-- 娄烜赫（后勤部主管） -->
+          <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+            <h4 class="text-xl font-bold text-primary mb-1">娄烜赫</h4>
+            <p class="text-tertiary mb-3">后勤部主管</p>
+            <!--  
+              <div class="mb-3">
+                <span class="font-medium">专业背景：</span>
+                <span>软件工程学士</span>
+              </div> -->
+            <div>
+              <span class="font-medium">负责工作：</span>
+              <span>财务管理、资金规划、后勤保障</span>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      </div>
+    </section>
+
+    <div class="section-divider my-16"></div>
+
+    <!-- 第二部分：支持与保障 -->
+    <section id="support" class="mb-20 py-8 bg-background/50">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-serif font-bold text-primary mb-3">支持与保障体系</h2>
+        <div class="w-24 h-1 bg-secondary mx-auto"></div>
+        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">围绕项目落地、运营风险、长期发展三大核心，构建全维度支撑体系</p>
+      </div>
+
+      <!-- 核心保障框架 -->
+      <div class="max-w-6xl mx-auto px-4">
+        <!-- 政策支撑 -->
+        <div
+          class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 mb-10 overflow-hidden transform hover:-translate-y-1">
+          <div class="flex flex-col md:flex-row">
+            <!-- 左侧图标区 -->
+            <div class="bg-primary/10 p-8 md:w-1/6 flex items-center justify-center">
+              <div class="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center">
+                <i class="fa fa-gavel text-primary text-3xl"></i>
+              </div>
+            </div>
+            <!-- 右侧内容区 -->
+            <div class="p-8 md:w-5/6">
+              <div class="flex items-center mb-5">
+                <h3 class="text-2xl font-bold text-primary mr-4">政策支撑</h3>
+                <span class="bg-primary/10 text-primary text-sm px-3 py-1 rounded-full">外部核心保障</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fa fa-file-text-o text-secondary mr-2"></i>专项政策对接
+                  </h4>
+                  <p class="text-gray-600 text-sm">依托《许昌市中医药传承创新发展实施方案》，联动禹州"国家中医药传承创新发展试验区"区位优势，获取文旅项目合作与资源倾斜。</p>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fa fa-money text-secondary mr-2"></i>资金与补贴申请
+                  </h4>
+                  <p class="text-gray-600 text-sm">争取河南省大学生创新创业扶持资金、许昌市中医药产业专项补贴，通过"禹州英才计划"链接本地企业资源。</p>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fa fa-refresh text-secondary mr-2"></i>政策红利反哺
+                  </h4>
+                  <p class="text-gray-600 text-sm">以"乡村振兴"为切入点，带动农户就业与乡镇产值提升，换取税收优惠及仓储物流补贴，形成正向循环。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 团队建设保障 -->
+        <div
+          class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 mb-10 overflow-hidden transform hover:-translate-y-1">
+          <div class="flex flex-col md:flex-row">
+            <!-- 左侧图标区 -->
+            <div class="bg-primary/10 p-8 md:w-1/6 flex items-center justify-center">
+              <div class="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center">
+                <i class="fa fa-users text-primary text-3xl"></i>
+              </div>
+            </div>
+            <!-- 右侧内容区 -->
+            <div class="p-8 md:w-5/6">
+              <div class="flex items-center mb-5">
+                <h3 class="text-2xl font-bold text-primary mr-4">团队建设保障</h3>
+                <span class="bg-primary/10 text-primary text-sm px-3 py-1 rounded-full">内部核心支撑</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fa fa-sitemap text-secondary mr-2"></i>组织架构与职责
+                  </h4>
+                  <p class="text-gray-600 text-sm">10人核心团队分工明确，涵盖管理层（总经理、销售主管）及职能部门（技术、市场、财务等），确保高效协同。</p>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fa fa-graduation-cap text-secondary mr-2"></i>高校合作引才
+                  </h4>
+                  <p class="text-gray-600 text-sm">与河南大学共建实践基地，招募设计、电商等专业学生实习，组建"本草创客工作坊"补充专业人才。</p>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fa fa-book text-secondary mr-2"></i>技能培训提升
+                  </h4>
+                  <p class="text-gray-600 text-sm">定期邀请非遗传承人、电商专家开展培训，强化非遗技艺应用与数字化营销能力。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 风险应对保障 -->
+        <div
+          class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 mb-10 overflow-hidden transform hover:-translate-y-1">
+          <div class="flex flex-col md:flex-row">
+            <!-- 左侧图标区 -->
+            <div class="bg-primary/10 p-8 md:w-1/6 flex items-center justify-center">
+              <div class="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center">
+                <i class="fa fa-shield text-primary text-3xl"></i>
+              </div>
+            </div>
+            <!-- 右侧内容区 -->
+            <div class="p-8 md:w-5/6">
+              <div class="flex items-center mb-5">
+                <h3 class="text-2xl font-bold text-primary mr-4">风险应对保障</h3>
+                <span class="bg-primary/10 text-primary text-sm px-3 py-1 rounded-full">全链路防控</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fa fa-line-chart text-secondary mr-2"></i>市场接受度风险
+                  </h4>
+                  <p class="text-gray-600 text-sm">首年精简至3大系列8款SKU，小批量试产测试反馈；预留20%启动资金用于应急推广，提升市场认知。</p>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fa fa-flag text-secondary mr-2"></i>竞争风险应对
+                  </h4>
+                  <p class="text-gray-600 text-sm">注册"禹药六君子"等专属IP商标；强化"地域特色+年轻创意"差异；绑定本地资源形成不可复制的供应链优势。</p>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fa fa-truck text-secondary mr-2"></i>供应链风险应对
+                  </h4>
+                  <p class="text-gray-600 text-sm">双货源保障（朱阁镇、鸠山镇）；签订保底供货协议（交货周期≤15天）；设置最低库存阈值（≥30天用量）。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 资源联动支持 -->
+        <div
+          class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden transform hover:-translate-y-1">
+          <div class="flex flex-col md:flex-row">
+            <!-- 左侧图标区 -->
+            <div class="bg-primary/10 p-8 md:w-1/6 flex items-center justify-center">
+              <div class="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center">
+                <i class="fa fa-link text-primary text-3xl"></i>
+              </div>
+            </div>
+            <!-- 右侧内容区 -->
+            <div class="p-8 md:w-5/6">
+              <div class="flex items-center mb-5">
+                <h3 class="text-2xl font-bold text-primary mr-4">资源联动支持</h3>
+                <span class="bg-primary/10 text-primary text-sm px-3 py-1 rounded-full">全产业链整合</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fa fa-industry text-secondary mr-2"></i>本地产业资源
+                  </h4>
+                  <p class="text-gray-600 text-sm">与禹州中药材加工企业、乡镇小作坊合作，统一标准降低成本；与神垕古镇等景区签订分成协议，融合文旅场景。</p>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fa fa-certificate text-secondary mr-2"></i>非遗与学术资源
+                  </h4>
+                  <p class="text-gray-600 text-sm">联合苌庄剪纸、钧瓷非遗传承人开发"非遗+本草"文创；与研究院合作获取炮制技术指导，提升产品专业度。</p>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fa fa-shopping-cart text-secondary mr-2"></i>电商与流量资源
+                  </h4>
+                  <p class="text-gray-600 text-sm">入驻拼多多"新国潮"、抖音"山货上头条"获取流量倾斜；在周边大学城搭建电商服务站，锁定年轻消费群体。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider my-16"></div>
+
+    <!-- 第三部分：发展目标 -->
+    <section id="goals" class="mb-20 py-10 bg-background/30">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-serif font-bold text-primary mb-3">发展目标体系</h2>
+        <div class="w-24 h-1 bg-secondary mx-auto"></div>
+        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">分阶段构建中医药文化创意生态，实现从区域试点到全国标杆的进阶</p>
+      </div>
+
+      <div class="max-w-5xl mx-auto px-4 relative">
+        <!-- 主时间轴 -->
+        <div class="absolute left-0 md:left-1/2 top-0 bottom-0 w-0.5 bg-primary/20 transform md:-translate-x-1/2"></div>
+
+        <!-- 目标内容 -->
+        <div class="space-y-20 relative">
+          <!-- 短期目标（1-2年） -->
+          <div class="flex flex-col md:flex-row items-center">
+            <!-- 时间节点 -->
+            <div class="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0 order-2 md:order-1">
+              <span
+                class="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-2">夯实基础期</span>
+              <h3 class="text-2xl font-bold text-primary mb-1">短期目标 (1-2年)</h3>
+              <p class="text-gray-500 mb-4">核心任务：完成产品线开发、资源绑定与市场验证</p>
+            </div>
+
+            <!-- 中心节点 -->
+            <div
+              class="w-16 h-16 rounded-full bg-secondary flex items-center justify-center shadow-lg z-10 mb-6 md:mb-0 order-1 md:order-2">
+              <span class="font-bold text-white text-xl">01</span>
+            </div>
+
+            <!-- 目标详情 -->
+            <div class="md:w-1/2 md:pl-12 order-3">
+              <div class="bg-white rounded-xl shadow-md p-6 card-hover border-l-4 border-primary">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <!-- 产品开发 -->
+                  <div>
+                    <div class="flex items-center mb-3">
+                      <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                        <i class="fa fa-cube text-primary"></i>
+                      </div>
+                      <h4 class="font-bold text-gray-800">系列化产品</h4>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                      <li>• 3大系列8款SKU（盲盒/文创/文旅）</li>
+                      <li>• 首年销售额目标42.85万元</li>
+                      <li>• 开发"禹脉本草"定制小程序</li>
+                    </ul>
+                  </div>
+
+                  <!-- 市场传播 -->
+                  <div>
+                    <div class="flex items-center mb-3">
+                      <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                        <i class="fa fa-line-chart text-primary"></i>
+                      </div>
+                      <h4 class="font-bold text-gray-800">流量转化</h4>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                      <li>• 盲盒预售转化率≥15%（6000件目标）</li>
+                      <li>• 文旅套餐复购率≥25%（1500单目标）</li>
+                      <li>• 新媒体投放费≤净利润8%</li>
+                    </ul>
+                  </div>
+
+                  <!-- 资源联动 -->
+                  <div>
+                    <div class="flex items-center mb-3">
+                      <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                        <i class="fa fa-handshake-o text-primary"></i>
+                      </div>
+                      <h4 class="font-bold text-gray-800">本地合作</h4>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                      <li>• 绑定朱阁镇/文家镇/鸿畅镇供应链</li>
+                      <li>• 神垕古镇分账+2家药企年度采购</li>
+                      <li>• 对接乡村振兴政策获取补贴</li>
+                    </ul>
+                  </div>
+
+                  <!-- 客户维系 -->
+                  <div>
+                    <div class="flex items-center mb-3">
+                      <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                        <i class="fa fa-users text-primary"></i>
+                      </div>
+                      <h4 class="font-bold text-gray-800">用户运营</h4>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                      <li>• 建立售后快速响应机制</li>
+                      <li>• "积分商城+裂变"培育1000+忠实用户</li>
+                      <li>• 重点覆盖大学生消费群体</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 中期目标（3-4年） -->
+          <div class="flex flex-col md:flex-row items-center">
+            <!-- 目标详情（左侧） -->
+            <div class="md:w-1/2 md:pr-12 order-1">
+              <div class="bg-white rounded-xl shadow-md p-6 card-hover border-r-4 border-primary">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <!-- 市场拓展 -->
+                  <div>
+                    <div class="flex items-center mb-3">
+                      <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                        <i class="fa fa-map-marker text-primary"></i>
+                      </div>
+                      <h4 class="font-bold text-gray-800">市场扩张</h4>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                      <li>• 第2年：覆盖河南省内10个地市</li>
+                      <li>• 第3年：辐射周边3省（供应链金融支持）</li>
+                      <li>• 第4年：开设多平台旗舰店，营收120万元</li>
+                    </ul>
+                  </div>
+
+                  <!-- IP体系 -->
+                  <div>
+                    <div class="flex items-center mb-3">
+                      <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                        <i class="fa fa-certificate text-primary"></i>
+                      </div>
+                      <h4 class="font-bold text-gray-800">文化IP打造</h4>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                      <li>• 推出"药王孙思邈""禹药六君子"等专属IP</li>
+                      <li>• 举办2场省级中医药文创大赛</li>
+                      <li>• IP授权与数字化版权交易变现</li>
+                    </ul>
+                  </div>
+
+                  <!-- 分账机制 -->
+                  <div>
+                    <div class="flex items-center mb-3">
+                      <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                        <i class="fa fa-balance-scale text-primary"></i>
+                      </div>
+                      <h4 class="font-bold text-gray-800">共赢体系</h4>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                      <li>• 农户分账12%-25%，年均增收3000+元</li>
+                      <li>• 支持5家合作社设备升级</li>
+                      <li>• 提取5%净利润设立乡镇文化基金</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 中心节点 -->
+            <div
+              class="w-16 h-16 rounded-full bg-secondary flex items-center justify-center shadow-lg z-10 my-6 md:my-0 order-2">
+              <span class="font-bold text-white text-xl">02</span>
+            </div>
+
+            <!-- 时间标题（右侧） -->
+            <div class="md:w-1/2 md:pl-12 text-left md:text-left mb-6 md:mb-0 order-3">
+              <span
+                class="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-2">规模扩张期</span>
+              <h3 class="text-2xl font-bold text-primary mb-1">中期目标 (3-4年)</h3>
+              <p class="text-gray-500">核心任务：跨省拓展、IP成型、建立分账机制</p>
+            </div>
+          </div>
+
+          <!-- 长期目标（5年+） -->
+          <div class="flex flex-col md:flex-row items-center">
+            <!-- 时间标题（右侧） -->
+            <div class="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0 order-2 md:order-1">
+              <span
+                class="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-2">生态成熟期</span>
+              <h3 class="text-2xl font-bold text-primary mb-1">长期目标 (5年+)</h3>
+              <p class="text-gray-500">核心任务：全国品牌、生态闭环、乡村振兴标杆</p>
+            </div>
+
+            <!-- 中心节点 -->
+            <div
+              class="w-16 h-16 rounded-full bg-secondary flex items-center justify-center shadow-lg z-10 mb-6 md:mb-0 order-1 md:order-2">
+              <span class="font-bold text-white text-xl">03</span>
+            </div>
+
+            <!-- 目标详情（左侧） -->
+            <div class="md:w-1/2 md:pl-12 order-3">
+              <div class="bg-white rounded-xl shadow-md p-6 card-hover border-l-4 border-primary">
+                <div class="grid grid-cols-1 gap-5">
+                  <!-- 全国影响力 -->
+                  <div>
+                    <div class="flex items-center mb-3">
+                      <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                        <i class="fa fa-globe text-primary"></i>
+                      </div>
+                      <h4 class="font-bold text-gray-800">全国品牌建设</h4>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                      <li>• 成为全国知名中医药文创品牌</li>
+                      <li>• 推动禹州中医药文化入选"国家文旅融合示范区"</li>
+                      <li>• 18-35岁用户对"华夏药都"认知度从15%提升至40%</li>
+                      <li>• 年接待文旅体验游客10万人次</li>
+                    </ul>
+                  </div>
+
+                  <!-- 生态闭环 -->
+                  <div>
+                    <div class="flex items-center mb-3">
+                      <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                        <i class="fa fa-refresh text-primary"></i>
+                      </div>
+                      <h4 class="font-bold text-gray-800">完整生态构建</h4>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                      <li>• 形成"文化挖掘→产品研发→市场推广→产业反哺"闭环</li>
+                      <li>• 打造全国县域中医药产业互联网平台</li>
+                      <li>• 助力禹州中医药产业产值突破50亿元</li>
+                      <li>• 成为"小成本、高创意、可持续"的乡村振兴典范</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-column">
+          <div class="footer-logo">
+            <div class="logo-mark small">禹</div>
+            <div>
+              <strong style="font-size:18px;display:block;">禹脉本草</strong>
+              <p style="font-size:12px;color:rgba(255,255,255,0.7);">华夏药都 · 文创传承</p>
+            </div>
+          </div>
+          <p class="footer-desc">
+            以大学生创新为引擎，通过文创产品活化中医药文化，构建“文化价值-产品体验-产业反哺”良性循环，助力乡村振兴。
+          </p>
+          <div class="footer-social">
+            <a href="#"><i class="fa-brands fa-weixin"></i></a>
+            <a href="#"><i class="fa-brands fa-weibo"></i></a>
+            <a href="#"><i class="fa-brands fa-douyin"></i></a>
+            <a href="#"><i class="fa-brands fa-bilibili"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h4>快速链接</h4>
+          <ul class="footer-links">
+            <li><a href="#yuyao">禹药六君子</a></li>
+            <li><a href="#products">文创产品</a></li>
+            <li><a href="#scenes">场景展示</a></li>
+            <li><a href="#about">项目介绍</a></li>
+            <li><a href="#">加入我们</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>购买渠道</h4>
+          <ul class="footer-links">
+            <li><a href="#">淘宝旗舰店</a></li>
+            <li><a href="#">抖音小店</a></li>
+            <li><a href="#">官方商城</a></li>
+            <li><a href="#">线下体验店</a></li>
+            <li><a href="#">企业定制</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>联系我们</h4>
+          <ul class="footer-links">
+            <li><a href="tel:0374-12345678"><i class="fa-solid fa-phone-alt" style="width:16px;"></i> 0374-12345678</a>
+            </li>
+            <li><a href="mailto:yumaibencao@163.com"><i class="fa-solid fa-envelope" style="width:16px;"></i>
+                yumaibencao@163.com</a></li>
+            <li><a href="#"><i class="fa-solid fa-map-marker-alt" style="width:16px;"></i> 河南省禹州市药城路</a></li>
+            <li><a href="#"><i class="fa-solid fa-clock" style="width:16px;"></i> 工作时间：9:00-18:00</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 禹脉本草 版权所有 | 豫ICP备12345678号 | 基于河南大学“禹脉本草”中医药文化创意商业项目开发</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 回到顶部按钮 -->
+  <button id="backToTop"
+    class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-primary text-white shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300">
+    <i class="fa fa-arrow-up"></i>
+  </button>
+
+</body>
+
+</html>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本草好物 - 禹脉本草</title>
+    <!-- 引入公共样式 -->
+    <link rel="stylesheet" href="../css/common.css">
+    <!-- 引入Font Awesome图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 引入Google字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- 页面专属样式 -->
+    <style>
+        :root{
+            --container: 1200px;
+            --green: #0f7a5b; /* 本草绿 */
+            --gold: #d4af37; /* 钧瓷金 */
+            --muted: #6b7a73;
+            --bg: #f6faf6;
+            --card-bg: #ffffff;
+            --shadow: 0 6px 16px rgba(10,30,20,0.06);
+        }
+
+        *{box-sizing:border-box;margin:0;padding:0}
+        html,body{height:100%}
+        body{
+            font-family: "Inter", "Noto Serif SC", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background:var(--bg);
+            color:#163029;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            line-height:1.6;
+        }
+
+        /* 容器样式 */
+        .container{
+            width: calc(100% - 32px);
+            max-width: var(--container);
+            margin: 0 auto;
+        }
+
+        /* 英雄区样式 */
+        .hero{
+            position:relative;
+            min-height:420px;
+            display:flex;
+            align-items:center;
+            color:white;
+            margin-bottom:40px;
+            overflow:hidden;
+            cursor:zoom-in;
+        }
+        .hero-bg{
+            position:absolute;
+            inset:0;
+            background-image:url('../img/背景图.jpg'); /* 中药材种植基地航拍图 */
+            background-size:cover;
+            background-position:center;
+            filter:brightness(0.65) saturate(0.9);
+            z-index:0;
+            transition:transform 0.8s ease;
+        }
+        .hero:hover .hero-bg{
+            transform:scale(1.1);
+        }
+        .hero-overlay{
+            position:absolute;
+            inset:0;
+            background:linear-gradient(90deg,rgba(10,40,30,0.7),rgba(10,40,30,0.4));
+            z-index:1;
+            pointer-events:none;
+        }
+        .hero-content{
+            position:relative;
+            z-index:2;
+            padding:48px 16px;
+            max-width:600px;
+            pointer-events:auto;
+        }
+        .hero-tags{
+            display:flex;
+            gap:8px;
+            margin-bottom:24px;
+        }
+        .hero-tag{
+            background:rgba(255,255,255,0.2);
+            padding:4px 12px;
+            border-radius:16px;
+            font-size:12px;
+        }
+        .hero-title{
+            font-size:36px;
+            font-weight:700;
+            font-family: "Noto Serif SC", serif;
+            margin-bottom:16px;
+            line-height:1.3;
+        }
+        .hero-subtitle{
+            font-size:18px;
+            margin-bottom:24px;
+            opacity:0.9;
+            line-height:1.6;
+        }
+
+        /* 按钮样式 */
+        .btn{
+            display:inline-block;
+            padding:12px 24px;
+            border-radius:28px;
+            text-decoration:none;
+            font-weight:600;
+            font-size:14px;
+            transition:all 0.2s ease;
+        }
+        .btn-primary{
+            background:var(--green);
+            color:#fff;
+            box-shadow: 0 6px 16px rgba(11,90,64,0.2);
+        }
+        .btn-primary:hover{
+            background:#0b5a40;
+            transform:translateY(-2px);
+        }
+        .btn-ghost{
+            background:transparent;
+            border:1px solid rgba(255,255,255,0.3);
+            color:#fff;
+            margin-left:12px;
+        }
+        .btn-ghost:hover{
+            background:rgba(255,255,255,0.1);
+        }
+
+        /* 禹药六君子介绍区 */
+        .yuyao-section{
+            padding:60px 0;
+            background:var(--card-bg);
+            margin-bottom:60px;
+        }
+        .section-header{
+            text-align:center;
+            margin-bottom:48px;
+        }
+        .section-title{
+            font-size:32px;
+            font-family: "Noto Serif SC", serif;
+            color:#13302a;
+            margin-bottom:12px;
+            position:relative;
+            display:inline-block;
+        }
+        .section-title::after{
+            content:'';
+            position:absolute;
+            bottom:-8px;
+            left:50%;
+            transform:translateX(-50%);
+            width:60px;
+            height:2px;
+            background:var(--gold);
+        }
+        .section-desc{
+            color:var(--muted);
+            max-width:700px;
+            margin:0 auto;
+        }
+
+        /* 六君子卡片容器 */
+        .yuyao-grid{
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap:32px;
+            margin-top:24px;
+        }
+        .yuyao-card{
+            background:var(--bg);
+            border-radius:16px;
+            overflow:hidden;
+            box-shadow:var(--shadow);
+            transition:transform 0.3s ease;
+            border:1px solid rgba(15,122,91,0.05);
+        }
+        .yuyao-card:hover{
+            transform:translateY(-8px);
+        }
+        .yuyao-card-header{
+            position:relative;
+            height:180px;
+            overflow:hidden;
+        }
+        .yuyao-card-header img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            transition:transform 0.5s ease;
+        }
+        .yuyao-card:hover .yuyao-card-header img{
+            transform:scale(1.05);
+        }
+        .yuyao-card-badge{
+            position:absolute;
+            top:12px;
+            right:12px;
+            background:var(--gold);
+            color:#fff;
+            padding:4px 10px;
+            border-radius:12px;
+            font-size:12px;
+            font-weight:600;
+        }
+        .yuyao-card-body{
+            padding:20px;
+        }
+        .yuyao-card-title{
+            font-size:18px;
+            font-family: "Noto Serif SC", serif;
+            margin-bottom:8px;
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .yuyao-card-title i{
+            color:var(--green);
+        }
+        .yuyao-card-desc{
+            color:var(--muted);
+            font-size:14px;
+            margin-bottom:16px;
+            line-height:1.5;
+        }
+        .yuyao-card-props{
+            display:flex;
+            flex-wrap:wrap;
+            gap:8px;
+            margin-top:12px;
+        }
+        .yuyao-card-prop{
+            background:rgba(15,122,91,0.05);
+            padding:4px 10px;
+            border-radius:8px;
+            font-size:12px;
+            color:var(--green);
+        }
+
+        /* 文创产品区 */
+        .product-section{
+            padding:40px 0 60px;
+        }
+        .product-tabs{
+            display:flex;
+            justify-content:center;
+            gap:24px;
+            margin-bottom:32px;
+            border-bottom:1px solid rgba(15,122,91,0.1);
+            padding-bottom:12px;
+        }
+        .product-tab{
+            padding:8px 16px;
+            cursor:pointer;
+            font-weight:600;
+            color:var(--muted);
+            border-radius:8px;
+            transition:all 0.2s ease;
+        }
+        .product-tab.active{
+            color:var(--green);
+            background:rgba(15,122,91,0.08);
+        }
+
+        /* 产品卡片容器 */
+        .product-grid{
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap:24px;
+        }
+        .product-card{
+            background:var(--card-bg);
+            border-radius:12px;
+            overflow:hidden;
+            box-shadow:var(--shadow);
+            transition:transform 0.2s ease;
+        }
+        .product-card:hover{
+            transform:translateY(-4px);
+        }
+        .product-card-img{
+            height:200px;
+            overflow:hidden;
+        }
+        .product-card-img img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            transition:transform 0.5s ease;
+        }
+        .product-card:hover .product-card-img img{
+            transform:scale(1.05);
+        }
+        .product-card-body{
+            padding:16px;
+        }
+        .product-card-title{
+            font-size:16px;
+            font-weight:600;
+            margin-bottom:8px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+        .product-card-price{
+            color:var(--green);
+            font-weight:700;
+        }
+        .product-card-desc{
+            font-size:13px;
+            color:var(--muted);
+            margin-bottom:12px;
+            display:-webkit-box;
+            -webkit-line-clamp:2;
+            -webkit-box-orient:vertical;
+            overflow:hidden;
+        }
+        .product-card-tag{
+            display:inline-block;
+            font-size:12px;
+            color:var(--gold);
+            background:rgba(212,175,55,0.1);
+            padding:2px 8px;
+            border-radius:4px;
+            margin-right:8px;
+        }
+
+        /* 购买面板 */
+        .purchase-panel{
+            width:320px;
+            flex-shrink:0;
+            position:sticky;
+            top:90px;
+            align-self:flex-start;
+        }
+        
+        /* 页脚样式 - 与第一个页面保持一致 */
+        .site-footer {
+            background: linear-gradient(180deg, #063a2a, #0b5a40);
+            color: #e8f7ef;
+            padding: 60px 0 24px;
+        }
+        
+        .footer-inner {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 32px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 32px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .logo-mark.small {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: #fff;
+            color: #0f7a5b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            font-family: "Noto Serif SC", serif;
+        }
+        
+        .footer-desc {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin-bottom: 24px;
+            max-width: 300px;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .footer-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: background 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .footer-social a:hover {
+            background: #d4af37;
+        }
+        
+        .footer-column h4 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: #d4af37;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #d4af37;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            padding-top: 24px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .footer-inner {
+                flex-direction: column;
+            }
+            
+            .footer-column {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏（与第一个页面统一） -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <img src="../culture/images/logo.png" alt="禹脉本草LOGO">
+                <span class="logo-text">禹脉本草</span>
+            </div>
+            <div class="nav-links">
+                <a href="../culture/index.html" >文化溯源</a>
+                <a href="../products/index.html"  class="active">本草好物</a>
+                <a href="../page2_medium/各大媒体宣传成果/媒体宣传成果.html">媒体聚焦</a>
+                <a href="../page3_our_story/溯源之旅/我们的故事.html">我们的故事</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区 -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <div class="hero-tags">
+                <span class="hero-tag">禹药六君子</span>
+                <span class="hero-tag">文创产品</span>
+                <span class="hero-tag">道地药材</span>
+            </div>
+            <h1 class="hero-title">千年药都·禹脉本草</h1>
+            <p class="hero-subtitle">精选禹州道地药材，融合传统与现代，打造兼具文化内涵与实用价值的本草好物。</p>
+            <div>
+                <a href="#products" class="btn btn-primary">探索产品</a>
+                <a href="#herbs" class="btn btn-ghost">了解禹药</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 禹药六君子介绍区 -->
+    <section class="yuyao-section" id="herbs">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">禹药六君子</h2>
+                <p class="section-desc">禹州作为中华药都，以其独特的地理环境和气候条件，孕育出品质上乘的道地药材。其中，禹丹参、禹半夏、禹南星、禹白芷、禹白附、禹金银花被誉为"禹药六君子"，闻名古今中外。</p>
+            </div>
+            <div class="yuyao-grid">
+                <div class="yuyao-card">
+                    <div class="yuyao-card-header">
+                        <img src="../img/禹丹参.png" alt="禹丹参">
+                        <span class="yuyao-card-badge">道地药材</span>
+                    </div>
+                    <div class="yuyao-card-body">
+                        <h3 class="yuyao-card-title"><i class="fas fa-heartbeat"></i>禹丹参</h3>
+                        <p class="yuyao-card-desc">禹州特产，以根条粗壮、色红、质优闻名。具有活血化瘀、清心安神的功效，是治疗心血管疾病的要药。</p>
+                        <div class="yuyao-card-props">
+                            <span class="yuyao-card-prop">心血管保健</span>
+                            <span class="yuyao-card-prop">活血化瘀</span>
+                            <span class="yuyao-card-prop">安神定志</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="yuyao-card">
+                    <div class="yuyao-card-header">
+                        <img src="../img/禹半夏.png" alt="禹半夏">
+                        <span class="yuyao-card-badge">道地药材</span>
+                    </div>
+                    <div class="yuyao-card-body">
+                        <h3 class="yuyao-card-title"><i class="fas fa-leaf"></i>禹半夏</h3>
+                        <p class="yuyao-card-desc">天南星科植物，块茎入药。具有燥湿化痰、降逆止呕、消痞散结的功效，是中医临床常用药材。</p>
+                        <div class="yuyao-card-props">
+                            <span class="yuyao-card-prop">燥湿化痰</span>
+                            <span class="yuyao-card-prop">降逆止呕</span>
+                            <span class="yuyao-card-prop">消痞散结</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="yuyao-card">
+                    <div class="yuyao-card-header">
+                        <img src="../img/禹南星.png" alt="禹南星">
+                        <span class="yuyao-card-badge">道地药材</span>
+                    </div>
+                    <div class="yuyao-card-body">
+                        <h3 class="yuyao-card-title"><i class="fas fa-seedling"></i>禹南星</h3>
+                        <p class="yuyao-card-desc">禹州特产天南星，以个大、色白、粉性足著称。具有燥湿化痰、祛风止痉、散结消肿的功效。</p>
+                        <div class="yuyao-card-props">
+                            <span class="yuyao-card-prop">燥湿化痰</span>
+                            <span class="yuyao-card-prop">祛风止痉</span>
+                            <span class="yuyao-card-prop">散结消肿</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="yuyao-card">
+                    <div class="yuyao-card-header">
+                        <img src="../img/禹白芷.png" alt="禹白芷">
+                        <span class="yuyao-card-badge">道地药材</span>
+                    </div>
+                    <div class="yuyao-card-body">
+                        <h3 class="yuyao-card-title"><i class="fas fa-wind"></i>禹白芷</h3>
+                        <p class="yuyao-card-desc">伞形科植物，根入药。具有散风除湿、通窍止痛、消肿排脓的功效，是治疗头痛、牙痛的良药。</p>
+                        <div class="yuyao-card-props">
+                            <span class="yuyao-card-prop">散风除湿</span>
+                            <span class="yuyao-card-prop">通窍止痛</span>
+                            <span class="yuyao-card-prop">消肿排脓</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="yuyao-card">
+                    <div class="yuyao-card-header">
+                        <img src="../img/禹白附.png" alt="禹白附">
+                        <span class="yuyao-card-badge">道地药材</span>
+                    </div>
+                    <div class="yuyao-card-body">
+                        <h3 class="yuyao-card-title"><i class="fas fa-balance-scale"></i>禹白附</h3>
+                        <p class="yuyao-card-desc">禹州特产，以个大、色白、粉性足为佳。具有祛风痰、定惊搐、解毒散结、止痛的功效。</p>
+                        <div class="yuyao-card-props">
+                            <span class="yuyao-card-prop">祛风痰</span>
+                            <span class="yuyao-card-prop">定惊搐</span>
+                            <span class="yuyao-card-prop">解毒散结</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="yuyao-card">
+                    <div class="yuyao-card-header">
+                        <img src="../img/禹金银花.png" alt="禹金银花">
+                        <span class="yuyao-card-badge">道地药材</span>
+                    </div>
+                    <div class="yuyao-card-body">
+                        <h3 class="yuyao-card-title"><i class="fas fa-flower"></i>禹金银花</h3>
+                        <p class="yuyao-card-desc">忍冬科植物，花蕾入药。具有清热解毒、疏散风热的功效，是治疗外感风热、温病初起的要药。</p>
+                        <div class="yuyao-card-props">
+                            <span class="yuyao-card-prop">清热解毒</span>
+                            <span class="yuyao-card-prop">疏散风热</span>
+                            <span class="yuyao-card-prop">抗菌消炎</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 文创产品区 -->
+    <section class="product-section" id="products">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">本草文创好物</h2>
+                <p class="section-desc">结合传统中医药文化与现代设计理念，打造兼具实用性与艺术性的文创产品，让中医药文化走进现代生活。</p>
+            </div>
+            <div class="product-tabs">
+                <div class="product-tab active">全部产品</div>
+                <div class="product-tab">养生茶品</div>
+                <div class="product-tab">护肤品</div>
+                <div class="product-tab">文创周边</div>
+                <div class="product-tab">中药材礼盒</div>
+            </div>
+            <div class="product-grid">
+                <!-- 产品卡片1 -->
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="../img/禹丹参.png" alt="丹参茶">
+                    </div>
+                    <div class="product-card-body">
+                        <div class="product-card-title">
+                            <span>禹丹参养生茶</span>
+                            <span class="product-card-price">¥68</span>
+                        </div>
+                        <p class="product-card-desc">精选禹州道地丹参，科学配比，独立包装，方便冲泡。</p>
+                        <div>
+                            <span class="product-card-tag">养生保健</span>
+                            <span class="product-card-tag">独立包装</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 产品卡片2 -->
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="../img/禹金银花.png" alt="金银花露">
+                    </div>
+                    <div class="product-card-body">
+                        <div class="product-card-title">
+                            <span>金银花露饮料</span>
+                            <span class="product-card-price">¥38</span>
+                        </div>
+                        <p class="product-card-desc">采用禹州金银花精制而成，清凉解渴，清热解毒。</p>
+                        <div>
+                            <span class="product-card-tag">清凉解暑</span>
+                            <span class="product-card-tag">天然饮品</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 产品卡片3 -->
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="../img/禹白芷.png" alt="本草面膜">
+                    </div>
+                    <div class="product-card-body">
+                        <div class="product-card-title">
+                            <span>白芷滋养面膜</span>
+                            <span class="product-card-price">¥88</span>
+                        </div>
+                        <p class="product-card-desc">添加禹白芷提取物，深层滋养，美白保湿。</p>
+                        <div>
+                            <span class="product-card-tag">美白保湿</span>
+                            <span class="product-card-tag">天然成分</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 产品卡片4 -->
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="../img/禹半夏.png" alt="中药香包">
+                    </div>
+                    <div class="product-card-body">
+                        <div class="product-card-title">
+                            <span>草本驱蚊香包</span>
+                            <span class="product-card-price">¥45</span>
+                        </div>
+                        <p class="product-card-desc">天然草本配方，安全驱蚊，清新空气。</p>
+                        <div>
+                            <span class="product-card-tag">天然驱蚊</span>
+                            <span class="product-card-tag">手工制作</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 产品卡片5 -->
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="../img/禹白附.png" alt="六君子礼盒">
+                    </div>
+                    <div class="product-card-body">
+                        <div class="product-card-title">
+                            <span>禹药六君子礼盒</span>
+                            <span class="product-card-price">¥298</span>
+                        </div>
+                        <p class="product-card-desc">精选禹州六种道地药材，精美包装，送礼佳品。</p>
+                        <div>
+                            <span class="product-card-tag">礼品装</span>
+                            <span class="product-card-tag">道地药材</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 产品卡片6 -->
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="../img/禹南星.png" alt="艾灸套装">
+                    </div>
+                    <div class="product-card-body">
+                        <div class="product-card-title">
+                            <span>家用艾灸套装</span>
+                            <span class="product-card-price">¥128</span>
+                        </div>
+                        <p class="product-card-desc">传统艾灸疗法，温通经络，调和气血。</p>
+                        <div>
+                            <span class="product-card-tag">艾灸养生</span>
+                            <span class="product-card-tag">家用便携</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <div class="logo-mark small">禹脉</div>
+                        <div>
+                            <h3 style="color: #fff; margin: 0; font-size: 18px;">禹脉本草</h3>
+                            <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 12px;">传承千年智慧，守护万家健康</p>
+                        </div>
+                    </div>
+                    <p class="footer-desc">禹脉本草致力于传承中医药文化精髓，让千年中医药智慧惠及现代生活。</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="微信"><i class="fab fa-weixin"></i></a>
+                        <a href="#" aria-label="微博"><i class="fab fa-weibo"></i></a>
+                        <a href="#" aria-label="抖音"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" aria-label="小红书"><i class="fas fa-book-open"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>快速链接</h4>
+                    <ul class="footer-links">
+                        <li><a href="../culture/index.html">首页</a></li>
+                        <li><a href="../culture/index.html">中医药文化</a></li>
+                        <li><a href="#herbs">禹药六君子</a></li>
+                        <li><a href="#products">产品中心</a></li>
+                        <li><a href="../team/index.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>购买渠道</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">官方商城</a></li>
+                        <li><a href="#">京东旗舰店</a></li>
+                        <li><a href="#">天猫旗舰店</a></li>
+                        <li><a href="#">线下门店</a></li>
+                        <li><a href="#">经销商合作</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>联系我们</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">联系方式</a></li>
+                        <li><a href="#">意见反馈</a></li>
+                        <li><a href="#">加入我们</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                        <li><a href="#">使用条款</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 禹脉本草 版权所有 | 京ICP备12345678号</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 交互脚本 -->
+    <script>
+        // 产品标签切换功能
+        document.querySelectorAll('.product-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.product-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                // 这里可以添加产品过滤逻辑
+            });
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

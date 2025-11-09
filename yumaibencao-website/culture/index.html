@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文化溯源 - 禹脉本草</title>
+    <!-- 引入公共样式 -->
+    <link rel="stylesheet" href="../css/common.css">
+    <!-- 引入页面专属样式 -->
+    <link rel="stylesheet" href="./css/culture.css">
+    <!-- 引入Font Awesome图标（用于装饰和社交媒体图标） -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 引入动画库 -->
+    <style>
+        /* 页面加载动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏（与其他页面统一） -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <img src="./images/logo.png" alt="禹脉本草LOGO">
+                <span class="logo-text">禹脉本草</span>
+            </div>
+            <div class="nav-links">
+                <a href="../culture/index.html" class="active">文化溯源</a>
+                <a href="../products/index.html">本草好物</a>
+                <a href="../page2_medium/各大媒体宣传成果/媒体宣传成果.html">媒体聚焦</a>
+                <a href="../page3_our_story/溯源之旅/我们的故事.html">我们的故事</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner区 -->
+    <section class="banner">
+        <img src="./images/banner-bg.jpg" alt="禹州中医药文化场景" class="banner-bg">
+        <div class="banner-mask"></div>
+        <div class="banner-content fade-in">
+            <h1 class="banner-title">禹脉本草 · 中医药的千年智慧</h1>
+            <p class="banner-subtitle">从《黄帝内经》到药王孙思邈，探寻禹州与中医药的深厚渊源</p>
+            <div class="banner-decoration">
+                <i class="fa fa-leaf"></i>
+                <span>传承千年</span>
+                <i class="fa fa-book"></i>
+                <span>弘扬文化</span>
+                <i class="fa fa-heartbeat"></i>
+            </div>
+            <button class="banner-btn" onclick="scrollToContent()">
+                <i class="fa fa-book"></i> 开始探索
+            </button>
+        </div>
+    </section>
+
+    <!-- 核心内容区 -->
+    <main class="container" id="content">
+        <!-- 第一模块：《黄帝内经》与禹州文化 -->
+        <section class="section huangdi-section fade-in">
+            <div class="huangdi-img">
+                <img src="./images/huangdi-book.jpg" alt="《黄帝内经》古籍" class="card-hover">
+            </div>
+            <div class="huangdi-content">
+                <h2 class="section-title">《黄帝内经》：中医药的智慧源头</h2>
+                <h3>一部跨越千年的养生宝典</h3>
+                <p>《黄帝内经》作为中国最早的医学典籍，成书于战国至秦汉时期，是中医药理论体系的基石。这部伟大著作不仅记录了丰富的医学知识，更蕴含着深邃的哲学思想，其中“天人合一”“阴阳平衡”“五行相生相克”等核心理论，构建了中医药独特的思维方式。</p>
+                <p>书中系统阐述了人体生理、病理、诊断与治疗的完整体系，提出“顺四时而食”“因情志调养生”等理念，这些智慧与现代健康生活方式高度契合。例如，“春生夏长，秋收冬藏”的养生原则，至今仍是禹州当地农户种植道地药材的金科玉律——丹参需在秋分时采收以保证药效，金银花宜在夏日清晨采摘以保持香气，这些传统实践皆严格遵循节气规律。</p>
+                
+                <div class="huangdi-highlights">
+                    <div class="highlight-item">
+                        <i class="fa fa-leaf"></i>
+                        <span>天人合一</span>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fa fa-heartbeat"></i>
+                        <span>治未病思想</span>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fa fa-calendar"></i>
+                        <span>四季养生</span>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fa fa-balance-scale"></i>
+                        <span>阴阳平衡</span>
+                    </div>
+                </div>
+
+                <div class="huangdi-quote">
+                    <p>“上古之人，其知道者，法于阴阳，和于术数，食饮有节，起居有常，不妄作劳，故能形与神俱，而尽终其天年，度百岁乃去。”</p>
+                    <p>——《黄帝内经·素问·上古天真论》</p>
+                </div>
+
+                <h3>《黄帝内经》与禹州的不解之缘</h3>
+                <p>作为“华夏药都”，禹州中医药文化的发展始终与《黄帝内经》紧密相连。自唐宋以来，禹州便成为中原地区重要的药材集散地，而《黄帝内经》则成为当地药商、药师必修的经典。明清时期，禹州药市的药材炮制技艺以“遵经炮制”为准则，每一道工序都有典籍可循。</p>
+                <p>禹州著名的“禹白芷”切片工艺，便严格遵循《内经》中“顺其纹理，利于药效”的记载，其薄片如蝉翼，药效释放充分；当地流传千年的“节气药膳”配方，亦源自《内经》“五谷为养，五果为助，五畜为益，五菜为充”的饮食理论，成为禹州独特的饮食文化。</p>
+                <p>如今，禹州中医药数字博物馆将《黄帝内经》作为核心展项，通过数字化手段生动还原古籍内容，结合3D动画、互动投影等现代技术，让年轻一代能够直观感受这部千年经典的智慧魅力，实现了传统与现代的完美融合。</p>
+            </div>
+        </section>
+
+        <!-- 第二模块：药王孙思邈在禹州 -->
+        <section class="section sunsimiao-section fade-in">
+            <div class="sunsimiao-img">
+                <img src="./images/sunsimiao-portrait.jpg" alt="药王孙思邈" class="card-hover">
+            </div>
+            <div class="sunsimiao-content">
+                <h2 class="section-title">药王孙思邈：济世救人的禹州足迹</h2>
+                <h3>“药王”的传奇一生</h3>
+                <p>孙思邈（541年-682年），唐代著名医学家，被后人尊称为“药王”。他历经西魏、北周、隋、唐四朝，行医长达七十余年，一生致力于医学研究与实践，编撰《千金要方》《千金翼方》两部医学巨著，被誉为中国古代医学百科全书。</p>
+                <p>孙思邈不仅医术精湛，更注重医德修养，首次系统提出“大医精诚”的医德准则，强调医者不仅要有精湛的医术，更要有高尚的品德和慈悲的心怀。这一理念影响后世医者千余年，成为中国传统医学伦理的核心。</p>
+                <p>孙思邈一生游历四方，寻访名药，而禹州因“药材齐全、品质上乘”成为他重要的行医之地。据禹州地方志记载，孙思邈曾在禹州龙门村居住数年，一边采药炮制，一边为百姓义诊，留下诸多济世救人的传说。</p>
+                
+                <div class="sunsimiao-virtues">
+                    <div class="virtue-item">
+                        <i class="far fa-heart"></i>
+                        <span>大医精诚</span>
+                    </div>
+                    <div class="virtue-item">
+                        <i class="fa fa-book"></i>
+                        <span>著书立说</span>
+                    </div>
+                    <div class="virtue-item">
+                        <i class="fa fa-users"></i>
+                        <span>济世救民</span>
+                    </div>
+                    <div class="virtue-item">
+                        <i class="fa fa-search"></i>
+                        <span>遍访名药</span>
+                    </div>
+                </div>
+
+                <div class="sunsimiao-stories">
+                    <div class="story-card card-hover">
+                        <h4><i class="fa fa-leaf" style="color: #5a9e78;"></i> 禹州丹参的发现传说</h4>
+                        <p>相传孙思邈在禹州行医时，遇一妇人因血瘀腹痛卧床不起，遍寻名医无果。他在具茨山采药时，发现一种开紫花的草本植物，其根断面呈红色，试煎后给妇人服用，数日后腹痛即愈。这种植物便是后来的“禹州丹参”，如今已成为禹州六大地理标志药材之一。</p>
+                    </div>
+                    <div class="story-card card-hover">
+                        <h4><i class="fa fa-heartbeat" style="color: #5a9e78;"></i> “药王庙”的由来</h4>
+                        <p>为纪念孙思邈对禹州中医药的贡献，当地百姓在他义诊的地方修建“药王庙”，每逢农历四月二十八（孙思邈诞辰），药商、药农都会前来祭拜，逐渐形成禹州药市的传统习俗。如今，药王庙仍是禹州神垕古镇的重要打卡点，每年吸引数万游客感受中医药文化。</p>
+                    </div>
+                    <div class="story-card card-hover">
+                        <h4><i class="fa fa-magic" style="color: #5a9e78;"></i> 孙思邈的炮制技艺</h4>
+                        <p>孙思邈在禹州期间，改良了多种药材的炮制方法。据记载，他将当地的防风、菊花等药材采用独特的“九蒸九晒”工艺处理，大大提升了药效。这些技艺被当地药师传承至今，成为禹州中医药文化的重要组成部分。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第三模块：禹州——中医药文化的传承之地 -->
+        <section class="section relation-section fade-in">
+            <h2 class="section-title">禹州：千年药都的文化传承</h2>
+            <div class="relation-content">
+                <div class="relation-text">
+                    <p>从《黄帝内经》的理论滋养，到孙思邈的实践传承，禹州历经千年积淀，逐渐成为中医药文化的重要发祥地和传承基地。这里不仅拥有33350公顷的中药材种植基地（2021年数据），更孕育出“禹白芷、禹南星、禹白附、禹密二花、禹丹参、禹山药”六大地理标志药材，印证了“药不到禹州不香”的美誉。</p>
+                    <p>禹州的中医药文化传承体现在多个方面：每年农历四月二十八的“药王孙思邈诞辰祭祀”活动，已成为国家级非物质文化遗产；禹州的中药材炮制技艺被列入省级非物质文化遗产名录；当地的“禹药炮制十八法”更是中国传统制药工艺的瑰宝。</p>
+                    <p>如今，“禹脉本草”项目正是以这些深厚的文化底蕴为根基，通过“禹药六君子”IP形象、二十四节气药膳盲盒、中药香薰等文创产品，让《黄帝内经》的智慧、孙思邈的医德，以更贴近现代生活的方式传承下去，助力禹州中医药文化“破圈”传播。</p>
+                </div>
+                <div class="relation-map">
+                    <!-- 可选：替换为禹州中医药文化地图（标注药王庙、古药市等） -->
+                    <img src="./images/yuzhou-map.jpg" alt="禹州中医药文化地图" class="card-hover">
+                </div>
+            </div>
+            
+            <!-- 禹州六大药材展示 -->
+            <div class="six-medicines">
+                <h3>禹州六大地理标志药材</h3>
+                <div class="medicine-grid">
+                    <div class="medicine-card card-hover">
+                        <div class="medicine-icon">
+                            <i class="fa fa-leaf"></i>
+                        </div>
+                        <h4>禹白芷</h4>
+                        <p>气芳香，味辛微苦，有散风除湿、通窍止痛之功效</p>
+                    </div>
+                    <div class="medicine-card card-hover">
+                        <div class="medicine-icon">
+                            <i class="fa fa-leaf"></i>
+                        </div>
+                        <h4>禹南星</h4>
+                        <p>燥湿化痰，祛风止痉，散结消肿，药效显著</p>
+                    </div>
+                    <div class="medicine-card card-hover">
+                        <div class="medicine-icon">
+                            <i class="fa fa-leaf"></i>
+                        </div>
+                        <h4>禹白附</h4>
+                        <p>祛风痰，定惊搐，解毒散结止痛</p>
+                    </div>
+                    <div class="medicine-card card-hover">
+                        <div class="medicine-icon">
+                            <i class="fa fa-leaf"></i>
+                        </div>
+                        <h4>禹密二花</h4>
+                        <p>清热解毒，疏散风热，香气浓郁</p>
+                    </div>
+                    <div class="medicine-card card-hover">
+                        <div class="medicine-icon">
+                            <i class="fa fa-leaf"></i>
+                        </div>
+                        <h4>禹丹参</h4>
+                        <p>活血化瘀，通经止痛，清心除烦</p>
+                    </div>
+                    <div class="medicine-card card-hover">
+                        <div class="medicine-icon">
+                            <i class="fa fa-leaf"></i>
+                        </div>
+                        <h4>禹山药</h4>
+                        <p>健脾养胃，生津益肺，补肾涩精</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 文化传承时间线 -->
+            <div class="timeline">
+                <h3>禹州中医药文化传承时间线</h3>
+                <div class="timeline-items">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>战国至秦汉时期</h4>
+                            <p>《黄帝内经》成书，为禹州中医药文化奠定理论基础</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>唐代</h4>
+                            <p>药王孙思邈在禹州行医采药，留下众多传说和技艺</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>明清时期</h4>
+                            <p>禹州药市鼎盛，成为全国四大药都之一</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>现代</h4>
+                            <p>“禹脉本草”项目启动，通过创新方式传承中医药文化</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚（与其他页面统一） -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <div class="logo-mark small">禹脉</div>
+                        <div>
+                            <h3 style="color: #fff; margin: 0; font-size: 18px;">禹脉本草</h3>
+                            <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 12px;">传承千年智慧，守护万家健康</p>
+                        </div>
+                    </div>
+                    <p class="footer-desc">禹脉本草致力于传承中医药文化精髓，让千年中医药智慧惠及现代生活。</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="微信"><i class="fab fa-weixin"></i></a>
+                        <a href="#" aria-label="微博"><i class="fab fa-weibo"></i></a>
+                        <a href="#" aria-label="抖音"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" aria-label="小红书"><i class="fas fa-book-open"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>快速链接</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">首页</a></li>
+                        <li><a href="#">中医药文化</a></li>
+                        <li><a href="#">禹药六君子</a></li>
+                        <li><a href="#">产品中心</a></li>
+                        <li><a href="#">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>购买渠道</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">官方商城</a></li>
+                        <li><a href="#">京东旗舰店</a></li>
+                        <li><a href="#">天猫旗舰店</a></li>
+                        <li><a href="#">线下门店</a></li>
+                        <li><a href="#">经销商合作</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>联系我们</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">联系方式</a></li>
+                        <li><a href="#">意见反馈</a></li>
+                        <li><a href="#">加入我们</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                        <li><a href="#">使用条款</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 禹脉本草 版权所有 | 京ICP备12345678号</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 交互脚本 -->
+    <script>
+        // 点击Banner按钮滚动到内容区
+        function scrollToContent() {
+            document.getElementById('content').scrollIntoView({
+                behavior: 'smooth' // 平滑滚动
+            });
+        }
+
+        // 导航栏高亮当前页面
+        window.onload = function () {
+            const links = document.querySelectorAll('.nav-links a');
+            links.forEach(link => {
+                if (link.href === window.location.href) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // 初始化滚动动画
+            initScrollAnimation();
+        }
+        
+        // 滚动动画效果
+        function initScrollAnimation() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.fade-in').forEach(element => {
+                element.style.opacity = 0;
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                observer.observe(element);
+            });
+        }
+        
+        // 给卡片添加鼠标悬浮效果
+        document.querySelectorAll('.card-hover').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px) scale(1.02)';
+                card.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.15)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+                card.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+            });
+        });
+    </script>
+</body>
+
+</html>

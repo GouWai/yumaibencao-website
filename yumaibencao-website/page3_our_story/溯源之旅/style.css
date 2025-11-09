@@ -1,0 +1,361 @@
+/* styles.css */
+
+
+.navbar {
+  background-color: #fff;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  */
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+nav {
+  display: block;
+  unicode-bidi: isolate;
+}
+
+.navbar-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2c6e49;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #2c6e49;
+  border-bottom: 2px solid #2c6e49;
+}
+
+
+
+
+
+/* 你的 .banner-bg 样式（原样保留，这是图片满屏的核心） */
+.banner-bg {
+  width: 100%;
+  /* 图片宽度=父容器100% */
+  height: 100%;
+  /* 图片高度=父容器100% */
+  object-fit: cover;
+  /* 图片铺满容器，不变形（关键！） */
+  transition: transform 0.5s ease;
+  /* 保留你的悬浮过渡效果 */
+}
+
+.banner-subtitle {
+  font-size: 16px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-family: 'SimSun', serif;
+}
+
+.banner-decoration {
+  font-size: 16px;
+  color: white;
+}
+
+.banner-btn {
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #2c6e49, #3fa36b);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(44, 110, 73, 0.3);
+  margin-top: 16px;
+}
+
+
+.header-container {
+  max-width: 1600px;
+  /* 仅页面标题header的内容区最大宽度为1600px */
+  /* 若想左右不留空隙，可改width: 100%; 取消calc(100% - 32px) */
+  width: 100%;
+  /* 可选：让内容区左右贴边，无32px空隙 */
+  height: 400px;
+}
+
+header:hover .banner-bg {
+  /* 选择器改为 .banner-bg，和你的样式类匹配 */
+  transform: scale(1.08);
+}
+
+:root {
+  --container: 1200px;
+  --green: #0f7a5b;
+  /* 本草绿 */
+  --gold: #d4af37;
+  /* 钧瓷金 */
+  --muted: #6b7a73;
+  --bg: #f6faf6;
+  --card-bg: #ffffff;
+  --shadow: 0 6px 16px rgba(10, 30, 20, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Microsoft YaHei", "思源宋体", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+}
+
+
+/* 页脚样式 */
+.site-footer {
+  background: linear-gradient(180deg, #063a2a, #0b5a40);
+  color: #e8f7ef;
+  padding: 60px 20px 24px 100px;
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 32px;
+}
+
+.footer-column {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-logo {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.logo-mark.small {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: "Noto Serif SC", serif;
+}
+
+.footer-desc {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin-bottom: 24px;
+  max-width: 300px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 16px;
+}
+
+.footer-social a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+.footer-social a:hover {
+  background: var(--gold);
+}
+
+.footer-column h4 {
+  font-size: 16px;
+  margin-bottom: 16px;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.footer-column h4::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--gold);
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: var(--gold);
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  padding-top: 24px;
+}
+
+/*
+容器样式 
+.container {
+  width: calc(100% - 32px);
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+头部样式 
+.site-header {
+  background: linear-gradient(180deg, #ffffff, #f4fbf7);
+  border-bottom: 1px solid rgba(15, 122, 91, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+}
+
+Logo样式 
+.logo {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.logo-mark {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--green), #0b5a40);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: "Noto Serif SC", serif;
+  box-shadow: 0 2px 8px rgba(15, 122, 91, 0.2);
+}
+
+.logo-text strong {
+  display: block;
+  font-size: 18px;
+  font-family: "Noto Serif SC", serif;
+  color: var(--green);
+  letter-spacing: 0.5px;
+}
+
+.logo-sub {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.3px;
+}
+
+*/
+/* 导航样式 - 优化响应式与弹性缩放 
+.main-nav ul {
+  display: flex;
+  list-style: none;
+  gap: clamp(12px, 3vw, 24px);
+ 间距随视口宽度弹性变化 
+  align-items: center;
+  flex-wrap: wrap;
+  小屏幕下自动换行 
+}
+
+*/
+
+/*
+.main-nav a {
+  color: #234b3f;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(14px, 2vw, 16px);
+  padding: 8px clamp(8px, 1.5vw, 12px);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+.main-nav a:hover,
+.main-nav .active a {
+  background: rgba(15, 122, 91, 0.08);
+  color: var(--green);
+}
+
+*/
